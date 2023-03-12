@@ -21,7 +21,7 @@ class ViewController: UIViewController {
 
     func animation(){
         let animation = CABasicAnimation()
-        animation.keyPath = "position.x"
+        animation.keyPath = "position.x"// To calculate the middle point of the view (x + width/2, y+ height/2)
         animation.fromValue = 20 + 140/2
         animation.toValue = 300
         animation.duration = 1
