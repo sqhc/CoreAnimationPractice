@@ -33,6 +33,7 @@ class ViewController: UIViewController {
                                    height: _height)
         
         scale()
+        rotate()
     }
 
     func animation(){
@@ -55,6 +56,17 @@ class ViewController: UIViewController {
         
         anotherView.layer.add(animation, forKey: "scale")
         anotherView.layer.transform = CATransform3DMakeScale(2, 2, 1)
+    }
+    
+    func rotate(){
+        let animation = CABasicAnimation()
+        animation.keyPath = "transform.rotation.z" // z-axis
+        animation.fromValue = 0
+        animation.toValue = CGFloat.pi / 4
+        animation.duration = 1
+        
+        anotherView.layer.add(animation, forKey: "rotate")
+        anotherView.layer.transform = CATransform3DMakeRotation(CGFloat.pi / 4, 0, 0, 1)
     }
 }
 
