@@ -32,8 +32,9 @@ class ViewController: UIViewController {
                                    width: _width,
                                    height: _height)
         
-        scale()
-        rotate()
+//        scale()
+//        rotate()
+        shake()
     }
 
     func animation(){
@@ -67,6 +68,17 @@ class ViewController: UIViewController {
         
         anotherView.layer.add(animation, forKey: "rotate")
         anotherView.layer.transform = CATransform3DMakeRotation(CGFloat.pi / 4, 0, 0, 1)
+    }
+    
+    func shake(){
+        let animation = CAKeyframeAnimation()
+        animation.keyPath = "position.x"
+        animation.values = [0, 10, -10, 10, 0]
+        animation.keyTimes = [0, 0.16, 0.5, 0.83, 1]
+        animation.duration = 0.4
+        
+        animation.isAdditive = true
+        anotherView.layer.add(animation, forKey: "shake")
     }
 }
 
