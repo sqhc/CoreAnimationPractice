@@ -12,7 +12,14 @@ class ViewController: UIViewController {
     
     let anotherView = UIView()
     let _width: CGFloat = 200
-    let _height:CGFloat = 100
+    let _height: CGFloat = 100
+    
+    let squareView = UIView()
+    let _sWidth: CGFloat = 40
+    let _sHeight: CGFloat = 40
+    
+    let redCircle = UIImageView()
+    let _diameter: CGFloat = 300
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,20 +28,43 @@ class ViewController: UIViewController {
         view.addSubview(redView)
         
         animation()
-        anotherView.backgroundColor = .systemBlue
-        view.addSubview(anotherView)
+//        anotherView.backgroundColor = .systemBlue
+//        view.addSubview(anotherView)
+        
+        squareView.backgroundColor = .systemPink
+        view.addSubview(squareView)
+        view.addSubview(redCircle)
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        anotherView.frame = CGRect(x: view.bounds.midX - _width/2,// Move to the center dynamically
-                                   y: view.bounds.midY - _height/2,
-                                   width: _width,
-                                   height: _height)
+//        anotherView.frame = CGRect(x: view.bounds.midX - _width/2,// Move to the center dynamically
+//                                   y: view.bounds.midY - _height/2,
+//                                   width: _width,
+//                                   height: _height)
+        squareView.frame = CGRect(x: view.bounds.midX - _sWidth/2
+                                  , y: view.bounds.midY - _sHeight/2
+                                  , width: _sWidth
+                                  , height: _sHeight)
+        redCircle.frame = CGRect(x: view.bounds.midX - _diameter/2,
+                                 y: view.bounds.midY - _diameter/2
+                                 , width: _diameter, height: _diameter)
         
+        let renderer = UIGraphicsImageRenderer(size: CGSize(width: _diameter, height: _diameter))
+        let img = renderer.image{ ctx in
+            let rectangle = CGRect(x: 0, y: 0, width: _diameter, height: _diameter)
+            
+            ctx.cgContext.setStrokeColor(UIColor.red.cgColor)
+            ctx.cgContext.setFillColor(UIColor.clear.cgColor)
+            ctx.cgContext.setLineWidth(1)
+            ctx.cgContext.addEllipse(in: rectangle)
+            ctx.cgContext.drawPath(using: .fillStroke)
+        }
+        redCircle.image = img
 //        scale()
 //        rotate()
-        shake()
+//        shake()
+        round()
     }
 
     func animation(){
@@ -79,6 +109,21 @@ class ViewController: UIViewController {
         
         animation.isAdditive = true
         anotherView.layer.add(animation, forKey: "shake")
+    }
+    
+    func round(){
+        let boundingRect = CGRect(x: -_diameter/2, y: -_diameter/2, width: _diameter, height: _diameter)
+        let orbit = CAKeyframeAnimation()
+        orbit.keyPath = "position"
+        
+        orbit.path = CGPath(ellipseIn: boundingRect, transform: nil)
+        
+        orbit.duration = 2
+        orbit.isAdditive = true
+        orbit.calculationMode = CAAnimationCalculationMode.paced
+        orbit.rotationMode = CAAnimationRotationMode.rotateAuto
+        
+        squareView.layer.add(orbit, forKey: "rounded")
     }
 }
 
